@@ -269,29 +269,10 @@ export default function App() {
     }
   };
 
-  // Demo auto-login helper
-  const handleDemoLogin = async () => {
-    try {
-      const response = await fetch("/api/auth/demo", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" }
-      });
-      if (!response.ok) {
-        throw new Error("Demo login failed");
-      }
-      const data = await response.json();
-      setCurrentUser({ ...data.user, token: data.token });
-    } catch (err: any) {
-      console.error(err);
-      setCurrentUser({
-        id: "1",
-        email: "mkulima@gmail.com",
-        fullName: "Juma Said",
-        location: "Morogoro",
-        createdAt: new Date().toISOString(),
-        token: "demo_token_12345"
-      });
-    }
+  // Demo login has been removed for security — redirect to auth form
+  const handleDemoLogin = () => {
+    setViewingLanding(false);
+    setAuthMode("login");
   };
 
   // Camera integration
@@ -654,11 +635,14 @@ export default function App() {
                   
                   <div className="flex flex-col sm:flex-row gap-4 pt-4">
                     <button
-                      onClick={handleDemoLogin}
+                      onClick={() => {
+                        setViewingLanding(false);
+                        setAuthMode("login");
+                      }}
                       className="px-8 py-4 bg-green-500 hover:bg-green-400 text-black font-black uppercase text-xs tracking-wider rounded-xl transition-all shadow-[0_0_25px_rgba(34,197,94,0.4)] flex items-center justify-center gap-2.5"
                     >
                       <Camera className="w-4 h-4" />
-                      <span>{lang === "sw" ? "Ingia Kwenye App (Bure)" : "Launch Diagnosis Tool"}</span>
+                      <span>{lang === "sw" ? "Ingia / Jisajili" : "Login to Start"}</span>
                     </button>
                     
                     <button
@@ -1029,10 +1013,13 @@ export default function App() {
                 </p>
                 <div className="pt-2">
                   <button
-                    onClick={handleDemoLogin}
+                    onClick={() => {
+                      setViewingLanding(false);
+                      setAuthMode("login");
+                    }}
                     className="px-6 py-3 bg-green-500/10 hover:bg-green-500/20 border border-green-500/30 text-green-500 text-xs font-black uppercase tracking-wider rounded-xl transition-all"
                   >
-                    {lang === "sw" ? "Fungua Chat Kamili ya AI" : "Open Full Interactive Chat"}
+                    {lang === "sw" ? "Ingia Kuanza Chat" : "Login to Open Chat"}
                   </button>
                 </div>
               </div>
@@ -1112,10 +1099,13 @@ export default function App() {
                 </p>
                 <div className="flex justify-center gap-4 pt-2">
                   <button
-                    onClick={handleDemoLogin}
+                    onClick={() => {
+                      setViewingLanding(false);
+                      setAuthMode("login");
+                    }}
                     className="px-8 py-3.5 bg-green-500 hover:bg-green-400 text-black font-black uppercase text-xs tracking-wider rounded-xl transition-all shadow-[0_0_15px_rgba(34,197,94,0.3)]"
                   >
-                    {lang === "sw" ? "Ingia kwenye Mfumo wa Majaribio" : "Enter Crop Doctor App"}
+                    {lang === "sw" ? "Ingia kwenye Mfumo" : "Login to Enter App"}
                   </button>
                   <button
                     onClick={() => {
@@ -1272,23 +1262,22 @@ export default function App() {
                 {authMode === "login" ? t.dontHaveAccount : t.alreadyHaveAccount}
               </button>
 
-              {/* Quick Demo Helper */}
               <div className={`mt-8 p-4 rounded-2xl border text-center ${
                 theme === "dark" ? "bg-[#0d1612]/60 border-green-900/10" : "bg-emerald-50 border-emerald-100/50"
               }`}>
                 <p className="text-[11px] font-bold text-green-500 uppercase tracking-widest mb-1.5">
-                  {lang === "sw" ? "VIPIMO VYA MAJARIBIO" : "QUICK DEMO & PREVIEW"}
+                  {lang === "sw" ? "BADO HUNA AKAUNTI?" : "DON'T HAVE AN ACCOUNT?"}
                 </p>
                 <p className="text-xs text-slate-400 leading-normal mb-3">
                   {lang === "sw" 
-                    ? "Unataka kuona utendaji kazi sasa hivi? Bonyeza hapa chini kuingia mara moja!" 
-                    : "Want to experience it instantly? Login with our ready sample account."}
+                    ? "Jisajili bure ili kupata ufikiaji kamili wa mfumo wa AI wa kilimo." 
+                    : "Create a free account to get full access to the AI plant diagnosis system."}
                 </p>
                 <button
-                  onClick={handleDemoLogin}
+                  onClick={() => setAuthMode(m => m === "login" ? "register" : "login")}
                   className="px-4 py-1.5 bg-green-500/10 hover:bg-green-500/20 border border-green-500/30 text-green-500 text-[10px] font-bold uppercase rounded-lg tracking-wider"
                 >
-                  {lang === "sw" ? "Ingia na Akaunti ya Majaribio" : "Login with Demo Account"}
+                  {lang === "sw" ? "Jisajili Sasa" : "Create Free Account"}
                 </button>
               </div>
             </div>

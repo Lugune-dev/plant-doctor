@@ -64,9 +64,6 @@ function saveUsers(usersList: DBUser[]) {
 const dbUsers: DBUser[] = loadUsers();
 const sessions = new Map<string, DBUser>();
 
-// Pre-seed the sessions map with a valid demo token for Juma Said (User ID 1)
-sessions.set("demo_token_12345", dbUsers[0]);
-
 function hashPassword(password: string): string {
   return crypto.createHash("sha256").update(password).digest("hex");
 }
@@ -157,28 +154,7 @@ app.post("/api/auth/login", (req, res) => {
   }
 });
 
-// 3. Auth: Demo Login Route
-app.post("/api/auth/demo", (req, res) => {
-  try {
-    const demoUser = dbUsers[0];
-    const token = "demo_token_12345";
-    sessions.set(token, demoUser);
-
-    res.json({
-      user: {
-        id: demoUser.id,
-        email: demoUser.email,
-        fullName: demoUser.fullName,
-        location: demoUser.location,
-        createdAt: demoUser.createdAt
-      },
-      token
-    });
-  } catch (error: any) {
-    console.error("Demo login error:", error);
-    res.status(500).json({ error: "Demo login failed." });
-  }
-});
+// Demo login is DISABLED for security — all users must authenticate with real credentials
 
 // 4. Token verification middleware to secure AI endpoints
 function authenticateToken(req: any, res: any, next: any) {
