@@ -1,6 +1,6 @@
 {
-    "framework": "react-router",
-    "buildCommand": "npm run build",
+    
+    "buildCommand": "npx remix build",
     "outputDirectory": "build/client"
     
 
